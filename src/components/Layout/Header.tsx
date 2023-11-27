@@ -1,11 +1,9 @@
-import React from "react";
-import {useState} from 'react'
-import {Dialog} from '@headlessui/react'
-import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
+import { Dialog } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import React, { useState } from "react";
 
-const navigation: Array<{name: string, href: string}> = [
-    { name: 'About', href: '#' },
-    { name: 'Source', href: '#' },
+const navigation: Array<{ name: string, href: string }> = [
+  { name: 'Source', href: '#' }
 ]
 
 const Header: React.FC = () => {
@@ -34,17 +32,15 @@ const Header: React.FC = () => {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12">
+        <div className="hidden lg:flex lg:flex-row lg:gap-x-12">
+          {/* Top nav links can go here */}
+        </div>
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {navigation.map((item) => (
-            <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-white px-2 py-1 bg-indigo-200 rounded-lg">
+            <a key={item.name} href={item.href} className="text-sm font-semibold px-2 py-1 rounded-lg border-indigo-200 border-2 mr-2">
               {item.name}
             </a>
           ))}
-        </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </a>
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -82,12 +78,7 @@ const Header: React.FC = () => {
                 ))}
               </div>
               <div className="py-6">
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </a>
+                {/* Login link can go here */}
               </div>
             </div>
           </div>

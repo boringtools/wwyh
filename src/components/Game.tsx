@@ -1,16 +1,6 @@
 import React, { useState } from "react";
 
-export enum GameGrade {
-  GRADE_I,
-  GRADE_II
-}
-
-interface GameInput {
-  name?: string
-  grade?: GameGrade
-}
-
-const Game: React.FC<GameInput> = (input) => {
+const Game: React.FC = () => {
   return (
     <>
       {/* Top player info and scope */}
