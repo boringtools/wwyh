@@ -1,13 +1,22 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import Layout from './components/Layout/Layout';
 import Hero from './components/Hero';
+import Start from './components/Start';
+import Game from './components/Game';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <Layout>
-      <Hero/>
-    </Layout>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Hero />}></Route>
+          <Route path="/start" element={<Start />}></Route>
+          <Route path="/game" element={<Game />}></Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
