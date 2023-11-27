@@ -17,7 +17,9 @@ const Game: React.FC = () => {
           </div>
         </div>
 
-        <div className="basis-1/2">
+        <div className="basis-1/2 text-right hidden md:block">
+          <strong className="text-2xl mr-2">Time Elapsed</strong>
+          <span className="basis-1/4 text-5xl text-right bg-gray-300 p-5 shadow-md">00:00:00</span>
         </div>
 
         <div className="basis-1/4 text-right">
