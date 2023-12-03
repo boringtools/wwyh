@@ -16,6 +16,9 @@ const Game: React.FC<GameInput> = (input) => {
   const [timeElapsedAsString, setTimeElaspsedAsString] = useState("00:00:00")
   const [spelledWord, setSpelledWord] = useState("")
   const [word, setWord] = useState<GameVerifiableWord | null>()
+  const [showFeedback, setShowFeedback] = useState(false)
+  const [feedbackSpelledWord, setFeedbackSpelledWord] = useState("")
+  const [feedbackCorrectWord, setFeedbackCorrectWord] = useState("")
 
   const finishGame = async() => {
     await input.finishGame()
@@ -43,6 +46,7 @@ const Game: React.FC<GameInput> = (input) => {
       return
     }
 
+    setShowFeedback(false)
     setWord(word!)
     sayText(word!.wordAsString())
   }
@@ -62,6 +66,9 @@ const Game: React.FC<GameInput> = (input) => {
       input.setScore(input.score + word!.point())
     } else {
       sayText("Incorrect")
+      setShowFeedback(true)
+      setFeedbackSpelledWord(spelledWord)
+      setFeedbackCorrectWord(word!.wordAsString())
     }
 
     setSpelledWord("")
@@ -113,9 +120,19 @@ const Game: React.FC<GameInput> = (input) => {
       </div>
 
       {/* Feedback area */}
-      <div className="flex h-32 p-5 flex-row mt-5 items-center bg-white shadow-lg">
-
-      </div>
+      {
+        showFeedback ?
+          <div className="flex h-32 p-5 flex-row mt-5 items-center bg-white shadow-lg">
+            <div className="basis-1/2 text-left hidden md:block">
+              <strong className="text-2xl mr-2">Correct Spelling</strong>
+              <span className="basis-1/4 text-5xl text-right bg-green-300 p-5 shadow-md">{feedbackCorrectWord}</span>
+            </div>
+            <div className="basis-1/2 text-right hidden md:block">
+              <strong className="text-2xl mr-2">Your Spelling</strong>
+              <span className="basis-1/4 text-5xl text-right bg-red-300 p-5 shadow-md">{feedbackSpelledWord}</span>
+            </div>
+          </div> : null
+      } 
 
       {/* Game area */}
       <div className="flex items-center flex-col bg-white shadow-lg mt-10 p-10 w-full">
