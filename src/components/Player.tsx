@@ -1,5 +1,5 @@
 import React from "react";
-import { PlayerGrade } from "../core/game.d";
+import { PlayerGrade } from "../core/game";
 
 interface PlayerComponentInput {
   name: string
@@ -15,7 +15,10 @@ const Player: React.FC<PlayerComponentInput> = (input) => {
   return (
     <>
       <div className="p-6 mt-20 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4">
-        <form onSubmit={input.startGame}>
+        <form onSubmit={(e) => {
+            input.startGame()
+            e.preventDefault()
+          }}>
           <div className="space-y-12">
             <h1 className="text-4xl font-bold leading-7 text-gray-900">Ready Player One</h1>
 
@@ -27,7 +30,7 @@ const Player: React.FC<PlayerComponentInput> = (input) => {
                     <input type="text" name="playerName" id="playerName"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-xl"
                       onChange={(e) => input.setName(e.target.value) }
-                      placeholder={input.name} />
+                      placeholder="Jane Smith" />
                   </div>
                 </div>
               </div>
@@ -41,9 +44,10 @@ const Player: React.FC<PlayerComponentInput> = (input) => {
                     <select name="grade" id="grade"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-xl"
                       onChange={(e) => {}}>
-                      <option value="grade-1">Grade-I</option>
-                      <option value="grade-2">Grade-II</option>
-                      <option value="grade-3">Grade-III</option>
+                      <option value={PlayerGrade.Elementary}>{PlayerGrade.Elementary}</option>
+                      <option value={PlayerGrade.Intermediate}>{PlayerGrade.Intermediate}</option>
+                      <option value={PlayerGrade.Advanced}>{PlayerGrade.Advanced}</option>
+                      <option value={PlayerGrade.Ninja}>{PlayerGrade.Ninja}</option>
                     </select>
                   </div>
                 </div>

@@ -1,6 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { PlayerGrade } from "../core/game";
+import { formatDistance, intervalToDuration } from "date-fns";
 
-const Game: React.FC = () => {
+interface GameInput {
+  name: string
+  grade: PlayerGrade
+  startedAt: Date
+  score: number
+}
+
+const Game: React.FC<GameInput> = (input) => {
+  const [timeElapsedAsString, setTimeElaspsedAsString] = useState("00:00:00")
+  const [spelledWord, setSpelledWord] = useState("")
+
+  const sayWord = () => {
+    console.log(`Time to say the word`)
+  }
+
+  const checkSpelling = () => {
+    console.log(`Checking spelling: ${spelledWord}`)
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const intervalDuration = intervalToDuration({
+        start: input.startedAt,
+        end: Date.now()
+      })
+
+      setTimeElaspsedAsString(`
+        ${intervalDuration.hours?.toString().padStart(2, "0")}:
+        ${intervalDuration.minutes?.toString().padStart(2, "0")}:
+        ${intervalDuration.seconds?.toString().padStart(2, "0")}
+      `)
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [timeElapsedAsString])
+
   return (
     <>
       {/* Top player info and scope */}
@@ -11,35 +48,39 @@ const Game: React.FC = () => {
               <img src="/user-icon.png"></img>
             </div>
             <div>
-              <p className="text-xl font-semibold mr-5">Sheoli</p>
-              <p className="text-sm text-grady-500 font-semibold">Grade-II</p>
+              <p className="text-xl font-semibold mr-5">{input.name}</p>
+              <p className="text-sm text-grady-500 font-semibold">{input.grade}</p>
             </div>
           </div>
         </div>
 
         <div className="basis-1/2 text-right hidden md:block">
           <strong className="text-2xl mr-2">Time Elapsed</strong>
-          <span className="basis-1/4 text-5xl text-right bg-gray-300 p-5 shadow-md">00:00:00</span>
+          <span className="basis-1/4 text-5xl text-right bg-gray-300 p-5 shadow-md">{timeElapsedAsString}</span>
         </div>
 
         <div className="basis-1/4 text-right">
           <strong className="text-2xl mr-2">Score</strong>
-          <span className="basis-1/4 text-5xl text-right bg-gray-300 p-5 shadow-md">100</span>
+          <span className="basis-1/4 text-5xl text-right bg-gray-300 p-5 shadow-md">{input.score}</span>
         </div>
       </div>
 
       {/* Game area */}
       <div className="flex items-center flex-col bg-white shadow-lg mt-10 p-10 w-full">
         <div className="w-48 h-48 mb-5">
-          <a href="#">
+          <a href="#" onClick={sayWord}>
             <img src="/play-icon.png" alt="" />
           </a>
         </div>
         <div className="w-1/2 items-center">
-          <form>
+          <form onSubmit={(e) => {
+            checkSpelling()
+            e.preventDefault()
+          }}>
             <input type="text"
               className="text-3xl text-center shadow-lg w-full border-2 border-indigo-200"
               name="answer"
+              onChange={(e) => setSpelledWord(e.target.value)}
               placeholder="Type your answer here.."
             />
             <div className="flex flex-col items-center">
