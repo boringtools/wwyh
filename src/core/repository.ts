@@ -1,4 +1,3 @@
-import { PlayerGrade } from "./game"
 
 export interface GameWord {
   word: string

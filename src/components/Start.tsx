@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Player from "./Player";
-import Game from "./Game";
 import { GameEngine, PlayerGrade } from "../core/game";
+import Game from "./Game";
 import GameResult from "./GameResult";
+import Player from "./Player";
 
 const Start: React.FC = () => {
   const [isGameStarted, setGameStarted] = useState(false)
@@ -11,6 +11,8 @@ const Start: React.FC = () => {
   const [playerGrade, setPlayerGrade] = useState(PlayerGrade.Elementary)
   const [playerScore, setPlayerScore] = useState(0)
   const [gameStartedAt, setGameStartedAt] = useState(new Date())
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [gameEngine, setGameEngine] = useState(new GameEngine({
     player: {
       name: playerName,
