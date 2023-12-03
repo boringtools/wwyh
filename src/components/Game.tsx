@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PlayerGrade } from "../core/game";
+import { GameEngine, GameVerifiableWord, PlayerGrade } from "../core/game";
 import { formatDistance, intervalToDuration } from "date-fns";
 
 interface GameInput {
@@ -7,18 +7,27 @@ interface GameInput {
   grade: PlayerGrade
   startedAt: Date
   score: number
+  gameEngine: GameEngine
 }
 
 const Game: React.FC<GameInput> = (input) => {
   const [timeElapsedAsString, setTimeElaspsedAsString] = useState("00:00:00")
   const [spelledWord, setSpelledWord] = useState("")
+  const [word, setWord] = useState<GameVerifiableWord>()
 
-  const sayWord = () => {
+  const sayWord = async () => {
     console.log(`Time to say the word`)
+
+    const word = await input.gameEngine.nextWord()
+    if (word == null) {
+      // Handle end of game
+    }
+
+    setWord(word!)
 
     let speech = new SpeechSynthesisUtterance()
 
-    speech.text = "Sea"
+    speech.text = word!.wordAsString()
     speech.volume = 1
     speech.rate = 0.2
     speech.pitch = 1
@@ -26,8 +35,11 @@ const Game: React.FC<GameInput> = (input) => {
     window.speechSynthesis.speak(speech)
   }
 
-  const checkSpelling = () => {
+  const checkSpelling = async () => {
     console.log(`Checking spelling: ${spelledWord}`)
+    const result = word!.wordValidate(spelledWord)
+
+    console.log(`Spelling verification: ${JSON.stringify(result)}`)
   }
 
   useEffect(() => {

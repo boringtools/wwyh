@@ -1,10 +1,16 @@
 import { PlayerGrade } from "./game"
 
+export interface GameWord {
+  word: string
+  points: number
+}
+
 export interface GameWordRepository {
   init: () => Promise<void>
-  random: () => Promise<string>
+  random: () => Promise<GameWord>
   count: () => Promise<Number>
-  getByIndex: (index: Number) => Promise<string>
+  getByIndex: (index: Number) => Promise<GameWord>
+  delete: (word: GameWord) => Promise<void>
 }
 
 /**
@@ -12,22 +18,33 @@ export interface GameWordRepository {
  * @returns {GameWordRepository}
  */
 export const inMemoryGameWordRepository = (): GameWordRepository => {
-  const words = [
+  let words = [
     "cat", "dog", "human", "monkey"
   ]
+
+  const point = 10
 
   return {
     async init() {
       // Nothing required
     },
     async random() {
-      return words[(Math.random() * 1000) % words.length]
+      return {
+        word: words[Math.floor(Math.random() * words.length)],
+        points: point
+      }
     },
     async count() {
       return words.length
     },
     async getByIndex(index) {
-      return words[index.valueOf() % words.length]
+      return {
+        word: words[index.valueOf() % words.length],
+        points: point
+      }
     },
+    async delete(word) {
+      words = words.filter((w) => w !== word.word)
+    }
   }
 }

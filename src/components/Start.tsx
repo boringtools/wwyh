@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Player from "./Player";
 import Game from "./Game";
-import { PlayerGrade } from "../core/game";
+import { GameEngine, PlayerGrade } from "../core/game";
 
 const Start: React.FC = () => {
   const [isGameStarted, setGameStarted] = useState(false)
@@ -9,8 +9,14 @@ const Start: React.FC = () => {
   const [playerGrade, setPlayerGrade] = useState(PlayerGrade.Elementary)
   const [playerScore, setPlayerScore] = useState(0)
   const [gameStartedAt, setGameStartedAt] = useState(new Date())
+  const [gameEngine, setGameEngine] = useState(new GameEngine({
+    player: {
+      name: playerName,
+      grade: playerGrade
+    }
+  }))
 
-  const startGameFormSubmitHandler = () => {
+  const startGameFormSubmitHandler = async () => {
     if (!playerName) {
       alert(`A player name is required`)
       return
@@ -22,6 +28,7 @@ const Start: React.FC = () => {
     }
 
     console.log(`Starting game for ${playerName} at ${playerGrade}`)
+    await gameEngine.init()
 
     setGameStartedAt(new Date())
     setGameStarted(true)
@@ -34,6 +41,7 @@ const Start: React.FC = () => {
         grade={playerGrade}
         startedAt={gameStartedAt}
         score={playerScore}
+        gameEngine={gameEngine}
       />
     )
   } else {
