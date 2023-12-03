@@ -30,7 +30,7 @@ const Player: React.FC<PlayerComponentInput> = (input) => {
                     <input type="text" name="playerName" id="playerName"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-xl"
                       onChange={(e) => input.setName(e.target.value) }
-                      placeholder="Jane Smith" />
+                      placeholder="Enter your name" />
                   </div>
                 </div>
               </div>

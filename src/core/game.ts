@@ -25,6 +25,7 @@ interface GameWordVerificationResult {
 // The game engine returns this contract for a word
 export interface GameVerifiableWord {
   wordAsString(): string
+  point(): number
   wordValidate(input: string): GameWordVerificationResult
 }
 
@@ -70,6 +71,7 @@ export class GameEngine {
 
     return {
       wordAsString: () => word.word,
+      point: () => word.points,
       wordValidate: (input): GameWordVerificationResult => {
         if (input === word.word) {
           this.gameRepository.delete(word)

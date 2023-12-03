@@ -7,27 +7,24 @@ interface GameInput {
   grade: PlayerGrade
   startedAt: Date
   score: number
+  setScore: React.Dispatch<React.SetStateAction<number>>
+  finishGame: () => Promise<void>
   gameEngine: GameEngine
 }
 
 const Game: React.FC<GameInput> = (input) => {
   const [timeElapsedAsString, setTimeElaspsedAsString] = useState("00:00:00")
   const [spelledWord, setSpelledWord] = useState("")
-  const [word, setWord] = useState<GameVerifiableWord>()
+  const [word, setWord] = useState<GameVerifiableWord | null>()
 
-  const sayWord = async () => {
-    console.log(`Time to say the word`)
+  const finishGame = async() => {
+    await input.finishGame()
+  }
 
-    const word = await input.gameEngine.nextWord()
-    if (word == null) {
-      // Handle end of game
-    }
-
-    setWord(word!)
-
+  const sayText = async (text: string) => {
     let speech = new SpeechSynthesisUtterance()
 
-    speech.text = word!.wordAsString()
+    speech.text = text
     speech.volume = 1
     speech.rate = 0.2
     speech.pitch = 1
@@ -35,11 +32,40 @@ const Game: React.FC<GameInput> = (input) => {
     window.speechSynthesis.speak(speech)
   }
 
+  const sayWord = async () => {
+    console.log(`Time to say the word`)
+
+    const word = await input.gameEngine.nextWord()
+    if (word == null) {
+      console.log(`No more words available`)
+      await finishGame()
+
+      return
+    }
+
+    setWord(word!)
+    sayText(word!.wordAsString())
+  }
+
   const checkSpelling = async () => {
+    if (word == null) {
+      console.log(`No word available in state`)
+      return
+    }
+
     console.log(`Checking spelling: ${spelledWord}`)
     const result = word!.wordValidate(spelledWord)
 
     console.log(`Spelling verification: ${JSON.stringify(result)}`)
+    if (result.match) {
+      sayText("Correct")
+      input.setScore(input.score + word!.point())
+    } else {
+      sayText("Incorrect")
+    }
+
+    setSpelledWord("")
+    setWord(null)
   }
 
   useEffect(() => {
@@ -106,6 +132,7 @@ const Game: React.FC<GameInput> = (input) => {
             <input type="text"
               className="text-3xl text-center shadow-lg w-full border-2 border-indigo-200"
               name="answer"
+              value={spelledWord}
               onChange={(e) => setSpelledWord(e.target.value)}
               placeholder="Type your answer here.."
             />
