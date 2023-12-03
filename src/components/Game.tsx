@@ -15,6 +15,15 @@ const Game: React.FC<GameInput> = (input) => {
 
   const sayWord = () => {
     console.log(`Time to say the word`)
+
+    let speech = new SpeechSynthesisUtterance()
+
+    speech.text = "Sea"
+    speech.volume = 1
+    speech.rate = 0.2
+    speech.pitch = 1
+
+    window.speechSynthesis.speak(speech)
   }
 
   const checkSpelling = () => {
@@ -63,6 +72,11 @@ const Game: React.FC<GameInput> = (input) => {
           <strong className="text-2xl mr-2">Score</strong>
           <span className="basis-1/4 text-5xl text-right bg-gray-300 p-5 shadow-md">{input.score}</span>
         </div>
+      </div>
+
+      {/* Feedback area */}
+      <div className="flex h-32 p-5 flex-row mt-5 items-center bg-white shadow-lg">
+
       </div>
 
       {/* Game area */}
