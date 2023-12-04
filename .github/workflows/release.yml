@@ -31,7 +31,6 @@ jobs:
         run: npm run build
         env:
           CI: false
-          PUBLIC_URL: https://boringtools.github.io/wwyh/
       - name: No Jekyll
         run: touch ./build/.nojekyll
       - name: Upload artifact

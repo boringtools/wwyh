@@ -1,6 +1,9 @@
+import { intervalToDuration } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { GameEngine, GameVerifiableWord, PlayerGrade } from "../core/game";
-import { formatDistance, intervalToDuration } from "date-fns";
+import GameWaitIcon from "./assets/wait-icon.png"
+import GameUserIcon from "./assets/user-icon.png"
+import GamePlayIcon from "./assets/play-icon.png"
 
 interface GameInput {
   name: string
@@ -108,7 +111,7 @@ const Game: React.FC<GameInput> = (input) => {
         <div className="basis-1/4 text-left">
           <div className="flex items-center">
             <div className="w-12 h-12 bg-gray-400 rounded-full mr-4">
-              <img src="/user-icon.png"></img>
+              <img src={GameUserIcon}></img>
             </div>
             <div>
               <p className="text-xl font-semibold mr-5">{input.name}</p>
@@ -147,9 +150,9 @@ const Game: React.FC<GameInput> = (input) => {
       <div className="flex items-center flex-col bg-white shadow-lg mt-10 p-10 w-full">
         <div className="w-48 h-48 mb-5">
           <a href="#" onClick={sayWord}>
-            { interactionState == InteractionState.NONE && <img src="/play-icon.png" alt="Play Icon" /> }
-            { interactionState == InteractionState.WAITING_TO_SAY_WORD && <img src="/play-icon.png" alt="Play Icon" /> }
-            { interactionState == InteractionState.WAITING_FOR_SPELLING_INPUT && <img src="/wait-icon.png" alt="Wait Icon" /> }
+            { interactionState == InteractionState.NONE && <img src={GamePlayIcon} alt="Play Icon" /> }
+            { interactionState == InteractionState.WAITING_TO_SAY_WORD && <img src={GamePlayIcon} alt="Play Icon" /> }
+            { interactionState == InteractionState.WAITING_FOR_SPELLING_INPUT && <img src={GameWaitIcon} alt="Wait Icon" /> }
           </a>
         </div>
         <div className="w-1/2 items-center">
