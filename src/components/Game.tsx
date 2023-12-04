@@ -12,6 +12,12 @@ interface GameInput {
   gameEngine: GameEngine
 }
 
+enum InteractionState {
+  NONE,
+  WAITING_TO_SAY_WORD,
+  WAITING_FOR_SPELLING_INPUT
+}
+
 const Game: React.FC<GameInput> = (input) => {
   const [timeElapsedAsString, setTimeElaspsedAsString] = useState("00:00:00")
   const [spelledWord, setSpelledWord] = useState("")
@@ -19,6 +25,7 @@ const Game: React.FC<GameInput> = (input) => {
   const [showFeedback, setShowFeedback] = useState(false)
   const [feedbackSpelledWord, setFeedbackSpelledWord] = useState("")
   const [feedbackCorrectWord, setFeedbackCorrectWord] = useState("")
+  const [interactionState, setInteractionState] = useState<InteractionState>(InteractionState.WAITING_TO_SAY_WORD)
 
   const finishGame = async() => {
     await input.finishGame()
@@ -47,6 +54,7 @@ const Game: React.FC<GameInput> = (input) => {
     }
 
     setShowFeedback(false)
+    setInteractionState(InteractionState.WAITING_FOR_SPELLING_INPUT)
     setWord(word!)
     sayText(word!.wordAsString())
   }
@@ -73,6 +81,7 @@ const Game: React.FC<GameInput> = (input) => {
 
     setSpelledWord("")
     setWord(null)
+    setInteractionState(InteractionState.NONE)
   }
 
   useEffect(() => {
@@ -138,7 +147,9 @@ const Game: React.FC<GameInput> = (input) => {
       <div className="flex items-center flex-col bg-white shadow-lg mt-10 p-10 w-full">
         <div className="w-48 h-48 mb-5">
           <a href="#" onClick={sayWord}>
-            <img src="/play-icon.png" alt="" />
+            { interactionState == InteractionState.NONE && <img src="/play-icon.png" alt="Play Icon" /> }
+            { interactionState == InteractionState.WAITING_TO_SAY_WORD && <img src="/play-icon.png" alt="Play Icon" /> }
+            { interactionState == InteractionState.WAITING_FOR_SPELLING_INPUT && <img src="/wait-icon.png" alt="Wait Icon" /> }
           </a>
         </div>
         <div className="w-1/2 items-center">

@@ -1,5 +1,6 @@
 {
   "name": "wwyh",
+  "homepage": "https://boringtools.github.io/wwyh/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

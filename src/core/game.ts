@@ -73,7 +73,7 @@ export class GameEngine {
       wordAsString: () => word.word,
       point: () => word.points,
       wordValidate: (input): GameWordVerificationResult => {
-        if (input === word.word) {
+        if (input.toUpperCase() === word.word.toUpperCase()) {
           this.gameRepository.delete(word)
 
           return {
