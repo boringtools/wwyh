@@ -1,9 +1,9 @@
 import { intervalToDuration } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { GameEngine, GameVerifiableWord, PlayerGrade } from "../core/game";
-import GameWaitIcon from "./assets/wait-icon.png"
-import GameUserIcon from "./assets/user-icon.png"
-import GamePlayIcon from "./assets/play-icon.png"
+import GamePlayIcon from "./assets/play-icon.png";
+import GameUserIcon from "./assets/user-icon.png";
+import GameWaitIcon from "./assets/wait-icon.png";
 
 interface GameInput {
   name: string
@@ -162,6 +162,8 @@ const Game: React.FC<GameInput> = (input) => {
           }}>
             <input type="text"
               className="text-3xl text-center shadow-lg w-full border-2 border-indigo-200"
+              autoComplete="off"
+              autoFocus={true}
               name="answer"
               value={spelledWord}
               onChange={(e) => setSpelledWord(e.target.value)}
